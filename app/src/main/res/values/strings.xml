@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ChatApp</string>
+
+    <string name="password_error">Password should have at least 6 characters</string>
+    <string name="email_error">Email must be in correct format</string>
+    <string name="username">Username</string>
+    <string name="input_name">Name</string>
+    <string name="enter_password">Enter Password</string>
+
+    <string name="name">Nama</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="title_signup_page">Isi Datamu!</string>
+    <string name="message_login">Login dulu yah!</string>
+
+    <string name="signup">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+</resources>
