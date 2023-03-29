@@ -62,6 +62,7 @@ class LoginActivity:AppCompatActivity() {
         login()
     }
 
+    //email/password method
     private fun login() {
 
         binding.buttonLogin.setOnClickListener {
@@ -100,6 +101,7 @@ class LoginActivity:AppCompatActivity() {
 
     }
 
+    //gmail method
     private fun signIn(){
         val signInIntent = googleSignInClient.signInIntent
         resultLauncher.launch(signInIntent)

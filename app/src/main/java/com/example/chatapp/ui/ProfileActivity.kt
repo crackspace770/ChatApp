@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.chatapp.databinding.ActivityUserBinding
+import com.example.chatapp.databinding.ActivityProfileBinding
+import com.example.chatapp.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class UserActivity:AppCompatActivity() {
+class ProfileActivity:AppCompatActivity() {
 
-    private lateinit var binding: ActivityUserBinding
+    private lateinit var binding: ActivityProfileBinding
     private lateinit var auth: FirebaseAuth
     private var databaseReference :  DatabaseReference? = null
     private var database: FirebaseDatabase? = null
@@ -20,7 +21,7 @@ class UserActivity:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUserBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
@@ -36,15 +37,23 @@ class UserActivity:AppCompatActivity() {
     }
 
     private fun loadProfile(){
-        val user = auth.currentUser
-        val userreference = databaseReference?.child(user?.uid!!)
+        val fireBaseUser = auth.currentUser
+        val userreference = databaseReference?.child(fireBaseUser ?.uid!!)
 
-        binding.tvEmail.text = user?.email
-        binding.tvUsername.text = user?.displayName
+        binding.tvEmail.text = fireBaseUser?.email
+        binding.tvUsername.text = fireBaseUser?.displayName
 
         userreference?.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
+                val user = snapshot.getValue(User::class.java)
+                binding.tvUsername.text = user!!.username
+
+                if (user.imgProfile == "") {
+                    binding.imageView4.setImageResource(R.drawable.notification_icon_background)
+                } else {
+                    Glide.with(this@ProfileActivity).load(user.imgProfile).into(binding.imageView4)
+                }
 
                 binding.tvEmail.text = snapshot.child("email").value.toString()
                 binding.tvUsername.text = snapshot.child("username").value.toString()

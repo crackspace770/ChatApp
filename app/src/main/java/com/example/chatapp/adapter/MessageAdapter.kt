@@ -8,19 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ItemChatBinding
+import com.example.chatapp.databinding.ItemMessageBinding
 import com.example.chatapp.model.Message
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseUser
 
 
 class MessageAdapter(options: FirebaseRecyclerOptions<Message>,
                      private val currentUserName: String?
 ): FirebaseRecyclerAdapter<Message, MessageAdapter.MessageViewHolder>(options) {
 
+    private val MESSAGE_TYPE_LEFT = 0
+    private val MESSAGE_TYPE_RIGHT = 1
+    var firebaseUser: FirebaseUser? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_chat, parent, false)
-        val binding = ItemChatBinding.bind(view)
+        val view = inflater.inflate(R.layout.item_message, parent, false)
+        val binding = ItemMessageBinding.bind(view)
         return MessageViewHolder(binding)
     }
 
@@ -32,7 +38,7 @@ class MessageAdapter(options: FirebaseRecyclerOptions<Message>,
         holder.bind(model)
     }
 
-    inner class MessageViewHolder(private val binding: ItemChatBinding) :
+    inner class MessageViewHolder(private val binding: ItemMessageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.tvMessage.text = item.text

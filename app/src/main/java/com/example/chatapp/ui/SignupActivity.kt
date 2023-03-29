@@ -3,7 +3,6 @@ package com.example.chatapp.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -115,7 +114,7 @@ class SignupActivity:AppCompatActivity() {
                             binding.usernameEditText.setText("")
                             binding.passwordEditText.setText("")
                             val intent = Intent(this@SignupActivity,
-                                UserActivity::class.java)
+                                ProfileActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

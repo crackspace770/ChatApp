@@ -36,7 +36,7 @@
             />
 
         <activity
-            android:name=".ui.UserActivity"
+            android:name=".ui.ProfileActivity"
             android:label="User Activity"
             android:exported="false"
             />
