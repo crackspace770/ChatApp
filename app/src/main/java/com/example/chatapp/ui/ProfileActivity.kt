@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.example.chatapp.databinding.ActivityProfileBinding
 import com.example.chatapp.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -37,29 +36,25 @@ class ProfileActivity:AppCompatActivity() {
     }
 
     private fun loadProfile(){
-        val fireBaseUser = auth.currentUser
-        val userreference = databaseReference?.child(fireBaseUser ?.uid!!)
+        val user = auth.currentUser
+        val userreference = databaseReference?.child(user?.uid!!)
 
-        binding.tvEmail.text = fireBaseUser?.email
-        binding.tvUsername.text = fireBaseUser?.displayName
+        if (user != null) {
+            databaseReference =
+                FirebaseDatabase.getInstance().getReference("Users").child(user.uid)
+        }
 
-        userreference?.addValueEventListener(object: ValueEventListener {
+        binding.tvEmail.text = user?.email
+        binding.tvUsername.text = user?.displayName
+
+        databaseReference?.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 val user = snapshot.getValue(User::class.java)
                 binding.tvUsername.text = user!!.username
 
-                if (user.imgProfile == "") {
-                    binding.imageView4.setImageResource(R.drawable.notification_icon_background)
-                } else {
-                    Glide.with(this@ProfileActivity).load(user.imgProfile).into(binding.imageView4)
-                }
-
-                binding.tvEmail.text = snapshot.child("email").value.toString()
-                binding.tvUsername.text = snapshot.child("username").value.toString()
-                //  binding?.textViewName?.text = snapshot.child("name").value.toString()
-
-
+           //     binding.tvEmail.text = snapshot.child("email").value.toString()
+          //      binding.tvUsername.text = snapshot.child("username").value.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {

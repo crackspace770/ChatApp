@@ -1,8 +1,8 @@
 package com.example.chatapp.model
 
 data class Message (
-    val text: String? = null,
-    val name: String? = null,
-    val photoUrl: String? = null,
+    var senderId:String = "",
+    var receiverId:String = "",
+    var message:String = "",
     val timestamp: Long? = null
         )

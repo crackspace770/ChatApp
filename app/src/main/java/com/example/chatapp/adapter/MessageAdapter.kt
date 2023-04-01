@@ -1,64 +1,69 @@
 package com.example.chatapp.adapter
 
-import android.text.format.DateUtils
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.chatapp.R
-import com.example.chatapp.databinding.ItemChatBinding
-import com.example.chatapp.databinding.ItemMessageBinding
 import com.example.chatapp.model.Message
+import com.example.chatapp.ui.MessageActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import de.hdodenhof.circleimageview.CircleImageView
 
 
-class MessageAdapter(options: FirebaseRecyclerOptions<Message>,
-                     private val currentUserName: String?
-): FirebaseRecyclerAdapter<Message, MessageAdapter.MessageViewHolder>(options) {
+
+class MessageAdapter(private val context: Context, private val chatList: ArrayList<Message>) :
+    RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     private val MESSAGE_TYPE_LEFT = 0
     private val MESSAGE_TYPE_RIGHT = 1
     var firebaseUser: FirebaseUser? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_message, parent, false)
-        val binding = ItemMessageBinding.bind(view)
-        return MessageViewHolder(binding)
+        if (viewType == MESSAGE_TYPE_RIGHT) {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_message_right, parent, false)
+            return MessageViewHolder(view)
+        } else {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
+            return MessageViewHolder(view)
+        }
     }
 
-    override fun onBindViewHolder(
-        holder: MessageViewHolder,
-        position: Int,
-        model: Message
-    ) {
-        holder.bind(model)
+    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+        val chat = chatList[position]
+        holder.txtUserName.text = chat.message
+        //  Glide.with(context)
+        //      .load(user.profileImage)
+        //      .placeholder(R.drawable.profile_image)
+        //      .into(holder.imgUser)
     }
 
-    inner class MessageViewHolder(private val binding: ItemMessageBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Message) {
-            binding.tvMessage.text = item.text
-            setTextColor(item.name, binding.tvMessage)
-            binding.tvMessenger.text = item.name
-            Glide.with(itemView.context)
-                .load(item.photoUrl)
-                .circleCrop()
-                .into(binding.ivMessenger)
-            if (item.timestamp != null) {
-                binding.tvTimestamp.text = DateUtils.getRelativeTimeSpanString(item.timestamp)
-            }
+
+    override fun getItemCount(): Int {
+        return chatList.size
+    }
+
+
+    class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        val txtUserName: TextView = view.findViewById(R.id.tvMessage)
+        val imgUser: CircleImageView = view.findViewById(R.id.ivMessenger)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        if (chatList[position].senderId == firebaseUser!!.uid) {
+            return MESSAGE_TYPE_RIGHT
+        } else {
+            return MESSAGE_TYPE_LEFT
         }
-        private fun setTextColor(userName: String?, textView: TextView) {
-            if (currentUserName == userName && userName != null) {
-                textView.setBackgroundResource(R.drawable.rounded_message_blue)
-            } else {
-                textView.setBackgroundResource(R.drawable.rounded_message_yellow)
-            }
-        }
+
     }
 
 }

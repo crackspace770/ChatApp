@@ -30,7 +30,6 @@ class SignupActivity:AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         databaseReference = database?.reference!!.child("profile")
 
-
         setupView()
         signUp()
     }
@@ -39,7 +38,7 @@ class SignupActivity:AppCompatActivity() {
 
         binding.signupButton.setOnClickListener {
 
-            val userName = binding.usernameEditText.text.toString()
+            val username = binding.usernameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
@@ -84,7 +83,7 @@ class SignupActivity:AppCompatActivity() {
                     }
                 }
 
-            registerUser(userName,email,password)
+            registerUser(username,email,password)
 
         }
 
@@ -93,9 +92,9 @@ class SignupActivity:AppCompatActivity() {
         }
     }
 
-    private fun registerUser(userName:String,email:String,password:String){
+    private fun registerUser(username:String,email:String,password:String){
         auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this){
+            .addOnCompleteListener(this){ it ->
                 if (it.isSuccessful){
                     val user: FirebaseUser? = auth.currentUser
                     val userId:String = user!!.uid
@@ -103,9 +102,9 @@ class SignupActivity:AppCompatActivity() {
                     databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId)
 
                     val hashMap:HashMap<String,String> = HashMap()
-                    hashMap.put("userId",userId)
-                    hashMap.put("userName",userName)
-                    hashMap.put("profileImage","")
+                    hashMap["userId"] = userId
+                    hashMap["userName"] = username
+                    hashMap["profileImage"] = ""
 
                     databaseReference.setValue(hashMap).addOnCompleteListener(this){
                         if (it.isSuccessful){

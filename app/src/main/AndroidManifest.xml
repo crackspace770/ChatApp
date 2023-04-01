@@ -41,6 +41,17 @@
             android:exported="false"
             />
 
+        <activity
+            android:name=".ui.ChatActivity"
+            android:label="Chat Activity"
+            android:exported="false"
+            />
+
+        <activity
+            android:name=".ui.MessageActivity"
+            android:label="Message Activity"
+            android:exported="false"
+            />
 
     </application>
 
