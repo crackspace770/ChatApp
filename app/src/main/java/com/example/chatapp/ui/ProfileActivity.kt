@@ -51,7 +51,7 @@ class ProfileActivity:AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 val user = snapshot.getValue(User::class.java)
-                binding.tvUsername.text = user!!.username
+//                binding.tvUsername.text = user!!.username
 
            //     binding.tvEmail.text = snapshot.child("email").value.toString()
           //      binding.tvUsername.text = snapshot.child("username").value.toString()

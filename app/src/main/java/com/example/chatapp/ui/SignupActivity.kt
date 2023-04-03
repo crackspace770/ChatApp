@@ -113,7 +113,7 @@ class SignupActivity:AppCompatActivity() {
                             binding.usernameEditText.setText("")
                             binding.passwordEditText.setText("")
                             val intent = Intent(this@SignupActivity,
-                                ProfileActivity::class.java)
+                                LoginActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

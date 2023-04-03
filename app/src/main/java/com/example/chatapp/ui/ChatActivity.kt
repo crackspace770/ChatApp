@@ -64,7 +64,7 @@ class ChatActivity:AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
-                val currentUser = snapshot.getValue(User::class.java)
+        //        val currentUser = snapshot.getValue(User::class.java)
 
              //   if (currentUser!!.imgProfile== ""){
              //       imgProfile.setImageResource(com.google.firebase.database.R.drawable.profile_image)
@@ -72,6 +72,7 @@ class ChatActivity:AppCompatActivity() {
            //         Glide.with(this@ChatActivity).load(currentUser.profileImage).into(imgProfile)
            //     }
 
+                /*
                 for (dataSnapShot: DataSnapshot in snapshot.children) {
                     val user = dataSnapShot.getValue(User::class.java)
 
@@ -80,7 +81,7 @@ class ChatActivity:AppCompatActivity() {
                         userList.add(user)
                     }
                 }
-
+            */
                 val userAdapter = ChatAdapter(this@ChatActivity, userList)
 
                 binding.rvChat.adapter = userAdapter
